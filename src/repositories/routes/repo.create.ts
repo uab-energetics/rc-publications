@@ -2,7 +2,7 @@ import {Route} from "../../core/routing/Route";
 import {Repository} from "../models/Repository";
 import {RepositorySchema} from "../models/repository.schema";
 import {validateBody} from "../../core/validation/schema";
-import {repoCreated} from "../events/repos";
+import {repoCreated} from "../events/RepoCreated";
 
 export const createRepoRoute = ({ dbConn, event }): Route => ({
 
@@ -20,7 +20,7 @@ export const createRepoRoute = ({ dbConn, event }): Route => ({
         repo.projectID = projectID
         let repoModel = dbConn.manager.create(Repository, repo)
         await dbConn.manager.save(repoModel)
-        event(repoCreated(repo))
+        event(repoCreated(repoModel))
         return repoModel
     }
 })

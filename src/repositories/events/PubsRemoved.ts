@@ -1,16 +1,13 @@
+import {AppEvent} from "../../core/events/AppEvent";
 
-
-export const PUBS_ADDED = 'publications.added'
 export const PUBS_REMOVED = 'publications.removed'
 
-
-export const pubsAdded = (repoID, publications) => ({
-    type: PUBS_ADDED,
+export interface PubsRemoved extends AppEvent {
     payload: {
-        repoID,
-        publications
+        repoID: string,
+        publicationIDs: number[]
     }
-})
+}
 
 export const pubsRemoved = (repoID, publicationIDs) => ({
     type: PUBS_REMOVED,

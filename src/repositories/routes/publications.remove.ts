@@ -3,7 +3,7 @@ import {validateBody} from "../../core/validation/schema";
 
 import joi from 'joi'
 import {Publication} from "../models/Publication";
-import {pubsRemoved} from "../events/publications";
+import {pubsRemoved} from "../events/PubsRemoved";
 
 export const removePublicationsRoute = ({ dbConn, event }): Route => ({
 

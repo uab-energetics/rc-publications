@@ -1,7 +1,7 @@
 import {Route} from "../../core/routing/Route";
 import {Repository} from "../models/Repository";
 import {validateExists} from "../../core/validation/exists";
-import {repoDeleted} from "../events/repos";
+import {repoDeleted} from "../events/RepoDeleted";
 
 export const deleteRepoRoute = ({dbConn, event}): Route => ({
 

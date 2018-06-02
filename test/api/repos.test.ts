@@ -1,5 +1,4 @@
 import {getApp} from "../../src/app";
-import {create} from "domain";
 
 const request = require('supertest')
 

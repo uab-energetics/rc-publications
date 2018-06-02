@@ -12,7 +12,4 @@ export const httpErrorHandler = (err, req, res, next) => {
             trace: err.stack
         })
     }
-
-    // pass down pipeline for connection cleanup, logging, etc.
-    next(err)
 }

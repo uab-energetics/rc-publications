@@ -1,6 +1,5 @@
 import {Route} from "../../core/routing/Route";
 import {Repository} from "../models/Repository";
-import {validateExists} from "../../core/validation/exists";
 
 export const listReposByProject = ({dbConn}): Route => ({
 

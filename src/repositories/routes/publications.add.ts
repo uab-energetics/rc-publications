@@ -5,7 +5,7 @@ import {validateBody} from "../../core/validation/schema";
 import joi from 'joi'
 import {PublicationSchema} from "../models/publication.schema";
 import {Publication} from "../models/Publication";
-import {pubsAdded} from "../events/publications";
+import {pubsAdded} from "../events/PubsAdded";
 
 export const addPublicationsRoute = ({dbConn, event}): Route => ({
 
