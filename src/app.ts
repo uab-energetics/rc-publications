@@ -15,7 +15,8 @@ import {listReposByProject} from "./repositories/routes/repo.listbyproject";
 import {getEventHelper} from "./core/events/helper";
 import {REPO_CREATED, REPO_DELETED} from "./repositories/events/repos";
 import {addPublicationsRoute} from "./repositories/routes/publications.add";
-import {PUBS_ADDED} from "./repositories/events/publications";
+import {PUBS_ADDED, PUBS_REMOVED} from "./repositories/events/publications";
+import {removePublicationsRoute} from "./repositories/routes/publications.remove";
 
 /**
  * COMPOSITION ROOT
@@ -50,13 +51,15 @@ export const getApp = async () => {
     useRoute(app, updateRepoRoute({ dbConn, event }))
     useRoute(app, listReposByProject({ dbConn }))
     useRoute(app, addPublicationsRoute({ dbConn, event }))
+    useRoute(app, removePublicationsRoute({ dbConn, event }))
 
     app.use(httpErrorHandler)
     app.use((err, _, __, ___) => console.error('unhandled error: ', err))
 
     app.on(REPO_CREATED, data => console.log('App Event: ', data))
     app.on(REPO_DELETED, data => console.log('App Event: ', data))
-    app.on(PUBS_ADDED, data => console.log('App Event: ', data))
+    app.on(PUBS_ADDED, data => console.log('PubsAdded Event: ', data))
+    app.on(PUBS_REMOVED, data => console.log('PubsRemoved Event: ', data))
 
     return app
 }

@@ -4,9 +4,10 @@ import {validateBody} from "../../core/validation/schema";
 
 import joi from 'joi'
 import {PublicationSchema} from "../models/publication.schema";
+import {Publication} from "../models/Publication";
 import {pubsAdded} from "../events/publications";
 
-export const addPublicationsRoute = ({ dbConn, event }): Route => ({
+export const addPublicationsRoute = ({dbConn, event}): Route => ({
 
     path: '/projects/:projectID/pub-repos/:repoID/publications',
 
@@ -23,17 +24,20 @@ export const addPublicationsRoute = ({ dbConn, event }): Route => ({
         })
     ],
 
-    controller: async ({ repoID, publications }) => {
-        let dbrepo = await dbConn.getRepository(Repository)
-        return dbrepo.findOneOrFail(repoID, { relations: ['publications'] })
-            .then( async repo => {
-                repo.publications.push( ...publications )
-                await dbrepo.save(repo)
-                return repo
-            })
-            .then( repo => {
-                event(pubsAdded(repoID, publications))
-                return repo
-            })
+    controller: async ({repoID, publications}) => {
+        // we MUST create the publication models first
+        let publicationEntities = publications.map( P => dbConn.manager.create(Publication, P))
+        await dbConn.manager.save(publicationEntities)
+
+        // now, we can insert the relation
+        await dbConn.createQueryBuilder()
+            .relation(Repository, 'publications')
+            .of(repoID)
+            .add(publicationEntities)
+
+        // emit the created event, and return the new publications
+        event(pubsAdded(repoID, publicationEntities))
+        return { publications: publicationEntities }
     }
+
 })

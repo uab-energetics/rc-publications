@@ -8,11 +8,14 @@ test("Publications API", async () => {
 
     // create a new repo
     let createRepoRes = await request(app)
-        .post('/projects/12/pub-repos')
-        .send({ displayName: 'My Test Repo' })
-    expect(createRepoRes.statusCode).toBe(200)
+        .post('/projects/99/pub-repos')
+        .send({ displayName: 'My Test Repo 2' })
 
-    let repoID = createRepoRes.body.uuid
+    expect(createRepoRes.statusCode).toBe(200)
+    expect(createRepoRes.body.publications.length).toBe(0)
+
+    let repoID = createRepoRes.body.id
+
 
     // insert some publications
     let addPubsRes = await request(app)
@@ -30,7 +33,18 @@ test("Publications API", async () => {
             ]
         })
 
-    console.log(addPubsRes.body)
+    console.log('res body', addPubsRes.body)
     expect(addPubsRes.statusCode).toBe(200)
+    expect(addPubsRes.body.publications.length).toBe(2)
 
+
+    let pubIds = addPubsRes.body.publications.map( P => P.id )
+
+    // remove some publications
+    let removePubsRes = await request(app)
+        .post(`/projects/${12}/pub-repos/${repoID}/publications/remove`)
+        .send({
+            publicationIDs: [ pubIds[1] ]
+        })
+    expect(removePubsRes.statusCode).toBe(200)
 })

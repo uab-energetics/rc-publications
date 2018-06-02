@@ -6,7 +6,7 @@ import {Repository} from "./Repository";
 export class Publication {
 
     @PrimaryGeneratedColumn()
-    id: string
+    id: number
 
     @Column('varchar', { length: '500' })
     embeddingURL: string

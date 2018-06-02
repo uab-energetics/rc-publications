@@ -2,8 +2,8 @@ import {Route} from "../../core/routing/Route";
 import {Repository} from "../models/Repository";
 import {RepositorySchema} from "../models/repository.schema";
 import {validateBody} from "../../core/validation/schema";
-import {makeRepo} from "../factories/make.repo";
 import {repoCreated} from "../events/repos";
+import {InsertResult} from "typeorm";
 
 export const createRepoRoute = ({ dbConn, event }): Route => ({
 
@@ -20,8 +20,10 @@ export const createRepoRoute = ({ dbConn, event }): Route => ({
     controller: async ({ repo, projectID }) => {
         let dbrepo = await dbConn.getRepository(Repository)
         return dbrepo
-            .insert(makeRepo({ ...repo, projectID }))
-            .then( res => dbrepo.findOne(res.raw.insertedId))
+            .insert({ ...repo, projectID })
+            .then( (insertRes: InsertResult) =>
+                dbrepo.findOne(insertRes.identifiers[0].id, { relations: ['publications']})
+            )
             .then( repo => {
                 event(repoCreated(repo))
                 return repo

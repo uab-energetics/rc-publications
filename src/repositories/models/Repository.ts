@@ -1,11 +1,11 @@
-import {BeforeInsert, Column, Entity, JoinColumn, OneToMany, PrimaryColumn} from "typeorm";
+import {BeforeInsert, Column, Entity, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm";
 import {Publication} from "./Publication";
 
 @Entity()
 export class Repository {
 
-    @PrimaryColumn()
-    uuid: string
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column('varchar')
     projectID: string
