@@ -1,4 +1,5 @@
-import {BeforeInsert, Column, Entity, PrimaryColumn} from "typeorm";
+import {BeforeInsert, Column, Entity, JoinColumn, OneToMany, PrimaryColumn} from "typeorm";
+import {Publication} from "./Publication";
 
 @Entity()
 export class Repository {
@@ -12,4 +13,7 @@ export class Repository {
     @Column('varchar')
     displayName: string
 
+    @OneToMany(type => Publication, publication => publication.repo)
+    @JoinColumn()
+    publications: Publication[]
 }

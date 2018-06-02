@@ -14,6 +14,7 @@ import {updateRepoRoute} from "./repositories/routes/repo.update";
 import {listReposByProject} from "./repositories/routes/repo.listbyproject";
 import {getEventHelper} from "./core/events/helper";
 import {REPO_CREATED, REPO_DELETED} from "./repositories/events/repos";
+import {addPublicationsRoute} from "./repositories/routes/publications.add";
 
 /**
  * COMPOSITION ROOT
@@ -47,6 +48,7 @@ export const getApp = async () => {
     useRoute(app, deleteRepoRoute({ dbConn, event }))
     useRoute(app, updateRepoRoute({ dbConn, event }))
     useRoute(app, listReposByProject({ dbConn }))
+    useRoute(app, addPublicationsRoute({ dbConn, event }))
 
     app.use(httpErrorHandler)
     app.use((err, _, __, ___) => console.error('unhandled error: ', err))
