@@ -12,7 +12,6 @@ test("Publications API", async () => {
         .send({ displayName: 'My Test Repo 2' })
 
     expect(createRepoRes.statusCode).toBe(200)
-    expect(createRepoRes.body.publications.length).toBe(0)
 
     let repoID = createRepoRes.body.id
 
@@ -33,7 +32,6 @@ test("Publications API", async () => {
             ]
         })
 
-    console.log('res body', addPubsRes.body)
     expect(addPubsRes.statusCode).toBe(200)
     expect(addPubsRes.body.publications.length).toBe(2)
 

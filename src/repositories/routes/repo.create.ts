@@ -3,7 +3,6 @@ import {Repository} from "../models/Repository";
 import {RepositorySchema} from "../models/repository.schema";
 import {validateBody} from "../../core/validation/schema";
 import {repoCreated} from "../events/repos";
-import {InsertResult} from "typeorm";
 
 export const createRepoRoute = ({ dbConn, event }): Route => ({
 
@@ -18,15 +17,13 @@ export const createRepoRoute = ({ dbConn, event }): Route => ({
     ],
 
     controller: async ({ repo, projectID }) => {
-        let dbrepo = await dbConn.getRepository(Repository)
-        return dbrepo
-            .insert({ ...repo, projectID })
-            .then( (insertRes: InsertResult) =>
-                dbrepo.findOne(insertRes.identifiers[0].id, { relations: ['publications']})
-            )
-            .then( repo => {
-                event(repoCreated(repo))
-                return repo
-            })
+        repo.projectID = projectID
+
+        let repoModel = dbConn.manager.create(Repository, repo)
+        await dbConn.manager.save(repoModel)
+
+        event(repoCreated(repo))
+
+        return repoModel
     }
 })
