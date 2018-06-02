@@ -10,6 +10,8 @@ import {connectToDB} from "./core/database/connect";
 import {useRoute} from "./core/routing/route-builder";
 import {createRepoRoute} from "./repositories/routes/repo.create";
 import {deleteRepoRoute} from "./repositories/routes/repo.delete";
+import {updateRepoRoute} from "./repositories/routes/repo.update";
+import {listReposByProject} from "./repositories/routes/repo.listbyproject";
 
 /**
  * COMPOSITION ROOT
@@ -37,6 +39,8 @@ export const getApp = async () => {
 
     useRoute(app, createRepoRoute({ dbConn, events: app }))
     useRoute(app, deleteRepoRoute({ dbConn, events: app }))
+    useRoute(app, updateRepoRoute({ dbConn, events: app }))
+    useRoute(app, listReposByProject({ dbConn }))
 
     app.use(httpErrorHandler)
     app.use((err, _, __, ___) => console.error('unhandled error: ', err))
