@@ -1,8 +1,9 @@
 import {Route} from "../../core/routing/Route";
 import {Repository} from "../models/Repository";
 import {validateExists} from "../../core/validation/exists";
+import {repoDeleted} from "../events/repos";
 
-export const deleteRepoRoute = ({dbConn, events}): Route => ({
+export const deleteRepoRoute = ({dbConn, event}): Route => ({
 
     path: '/projects/:projectID/pub-repos/:id',
 
@@ -20,6 +21,6 @@ export const deleteRepoRoute = ({dbConn, events}): Route => ({
     controller: async ({repoID, projectID}) => {
         return await dbConn.getRepository(Repository)
             .delete(repoID)
-            .then( _ => events.emit('deleted-repo', repoID))
+            .then( _ => event(repoDeleted(repoID)))
     }
 })

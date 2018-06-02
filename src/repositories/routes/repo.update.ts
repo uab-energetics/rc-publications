@@ -4,8 +4,9 @@ import {RepositorySchema} from "../models/repository.schema";
 import {validateBody} from "../../core/validation/schema";
 import {makeRepo} from "../factories/make.repo";
 import {validateExists} from "../../core/validation/exists";
+import {repoUpdated} from "../events/repos";
 
-export const updateRepoRoute = ({ dbConn, events }): Route => ({
+export const updateRepoRoute = ({ dbConn, event }): Route => ({
 
     path: '/projects/:projectID/pub-repos/:id',
 
@@ -24,7 +25,7 @@ export const updateRepoRoute = ({ dbConn, events }): Route => ({
             .update(id, repo)
             .then( _ => dbrepo.findOne(id))
             .then( repo => {
-                events.emit('updated-repo', repo)
+                event(repoUpdated(repo))
                 return repo
             })
     }

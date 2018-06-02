@@ -12,6 +12,8 @@ import {createRepoRoute} from "./repositories/routes/repo.create";
 import {deleteRepoRoute} from "./repositories/routes/repo.delete";
 import {updateRepoRoute} from "./repositories/routes/repo.update";
 import {listReposByProject} from "./repositories/routes/repo.listbyproject";
+import {getEventHelper} from "./core/events/helper";
+import {REPO_CREATED, REPO_DELETED} from "./repositories/events/repos";
 
 /**
  * COMPOSITION ROOT
@@ -23,6 +25,7 @@ export const getApp = async () => {
     dotenv.config({ path: ".env" })
     const config = getConfigHelper(getConfig(process.env))
 
+
     // connect to message broker
     let { channel, connection } = await connectToRabbitMQ({ config })
 
@@ -33,20 +36,23 @@ export const getApp = async () => {
     const app = express()
     app.set('port', config('port'))
 
+    // event helper
+    const event = getEventHelper({ eventEmitter: app })
+
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(morgan('dev'))
 
-    useRoute(app, createRepoRoute({ dbConn, events: app }))
-    useRoute(app, deleteRepoRoute({ dbConn, events: app }))
-    useRoute(app, updateRepoRoute({ dbConn, events: app }))
+    useRoute(app, createRepoRoute({ dbConn, event }))
+    useRoute(app, deleteRepoRoute({ dbConn, event }))
+    useRoute(app, updateRepoRoute({ dbConn, event }))
     useRoute(app, listReposByProject({ dbConn }))
 
     app.use(httpErrorHandler)
     app.use((err, _, __, ___) => console.error('unhandled error: ', err))
 
-    app.on('created-repo', data => console.log('App Event: ', data))
-    app.on('deleted-repo', data => console.log('App Event: ', data))
+    app.on(REPO_CREATED, data => console.log('App Event: ', data))
+    app.on(REPO_DELETED, data => console.log('App Event: ', data))
 
     return app
 }

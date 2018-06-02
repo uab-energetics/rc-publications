@@ -3,8 +3,9 @@ import {Repository} from "../models/Repository";
 import {RepositorySchema} from "../models/repository.schema";
 import {validateBody} from "../../core/validation/schema";
 import {makeRepo} from "../factories/make.repo";
+import {repoCreated} from "../events/repos";
 
-export const createRepoRoute = ({ dbConn, events }): Route => ({
+export const createRepoRoute = ({ dbConn, event }): Route => ({
 
     path: '/projects/:projectID/pub-repos',
 
@@ -22,7 +23,7 @@ export const createRepoRoute = ({ dbConn, events }): Route => ({
             .insert(makeRepo({ ...repo, projectID }))
             .then( res => dbrepo.findOne(res.raw.insertedId))
             .then( repo => {
-                events.emit('created-repo', repo)
+                event(repoCreated(repo))
                 return repo
             })
     }
