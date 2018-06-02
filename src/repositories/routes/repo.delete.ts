@@ -19,8 +19,11 @@ export const deleteRepoRoute = ({dbConn, event}): Route => ({
     ],
 
     controller: async ({repoID, projectID}) => {
-        return await dbConn.getRepository(Repository)
-            .delete(repoID)
-            .then( _ => event(repoDeleted(repoID)))
+        await dbConn.manager.delete(Repository, repoID)
+        event(repoDeleted(repoID))
+        return {
+            msg: 'Repo deleted',
+            repoID
+        }
     }
 })

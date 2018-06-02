@@ -15,7 +15,6 @@ export const listReposByProject = ({dbConn}): Route => ({
     validators: [],
 
     controller: async ({ projectID }) => {
-        return await dbConn.getRepository(Repository)
-            .find({ projectID })
+        return await dbConn.manager.find(Repository, { projectID })
     }
 })

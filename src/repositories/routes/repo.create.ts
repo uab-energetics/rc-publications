@@ -18,12 +18,9 @@ export const createRepoRoute = ({ dbConn, event }): Route => ({
 
     controller: async ({ repo, projectID }) => {
         repo.projectID = projectID
-
         let repoModel = dbConn.manager.create(Repository, repo)
         await dbConn.manager.save(repoModel)
-
         event(repoCreated(repo))
-
         return repoModel
     }
 })

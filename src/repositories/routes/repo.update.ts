@@ -20,13 +20,8 @@ export const updateRepoRoute = ({ dbConn, event }): Route => ({
     ],
 
     controller: async ({ id, repo }) => {
-        let dbrepo = await dbConn.getRepository(Repository)
-        return dbrepo
-            .update(id, repo)
-            .then( _ => dbrepo.findOne(id))
-            .then( repo => {
-                event(repoUpdated(repo))
-                return repo
-            })
+        await dbConn.manager.update(Repository, id, repo)
+        event(repoUpdated(repo))
+        return await dbConn.manager.findOneOrFail(Repository, id)
     }
 })

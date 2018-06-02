@@ -23,11 +23,8 @@ export const removePublicationsRoute = ({ dbConn, event }): Route => ({
     ],
 
     controller: async ({ repoID, publicationIDs }) => {
-        await dbConn.getRepository(Publication)
-            .delete(publicationIDs)
-
+        await dbConn.manager.delete(Publication, publicationIDs)
         event(pubsRemoved(repoID, publicationIDs))
-
         return {
             msg: 'publications removed',
             publicationIDs
