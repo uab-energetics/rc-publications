@@ -1,5 +1,4 @@
-import {Column, Entity, PrimaryColumn} from "typeorm";
-
+import {BeforeInsert, Column, Entity, PrimaryColumn} from "typeorm";
 
 @Entity()
 export class Repository {

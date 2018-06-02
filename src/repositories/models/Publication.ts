@@ -12,5 +12,5 @@ export class Publication {
 
     @Column('varchar')
     displayName: string
-
+    
 }
