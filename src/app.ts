@@ -15,6 +15,7 @@ import {listReposByProject} from "./repositories/routes/repo.listbyproject";
 import {getEventHelper} from "./core/events/helper";
 import {REPO_CREATED, REPO_DELETED} from "./repositories/events/repos";
 import {addPublicationsRoute} from "./repositories/routes/publications.add";
+import {PUBS_ADDED} from "./repositories/events/publications";
 
 /**
  * COMPOSITION ROOT
@@ -55,6 +56,7 @@ export const getApp = async () => {
 
     app.on(REPO_CREATED, data => console.log('App Event: ', data))
     app.on(REPO_DELETED, data => console.log('App Event: ', data))
+    app.on(PUBS_ADDED, data => console.log('App Event: ', data))
 
     return app
 }

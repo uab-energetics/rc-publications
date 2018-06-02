@@ -4,6 +4,7 @@ import {validateBody} from "../../core/validation/schema";
 
 import joi from 'joi'
 import {PublicationSchema} from "../models/publication.schema";
+import {pubsAdded} from "../events/publications";
 
 export const addPublicationsRoute = ({ dbConn, event }): Route => ({
 
@@ -31,7 +32,7 @@ export const addPublicationsRoute = ({ dbConn, event }): Route => ({
                 return repo
             })
             .then( repo => {
-                event(repoID, publications)
+                event(pubsAdded(repoID, publications))
                 return repo
             })
     }
