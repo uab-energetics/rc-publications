@@ -16,6 +16,7 @@ import {removePublicationsRoute} from "./repositories/routes/publications.remove
 import {registerRabbitListener} from "./repositories/listeners/rabbit.listener";
 import {getEventHelper} from "./core/events/event";
 import {addPublicationsRoute} from "./repositories/routes/publications.add";
+import {RouteNotFound} from "./core/errors/RouteNotFound";
 
 /**
  * COMPOSITION ROOT
@@ -52,9 +53,11 @@ export const getApp = async () => {
     useRoute(app, addPublicationsRoute({ dbConn, event }))
     useRoute(app, removePublicationsRoute({ dbConn, event }))
 
+    app.use((req, res, next) => next(new RouteNotFound()))
+
     app.use(httpErrorHandler)
 
-    registerRabbitListener({ eventEmitter: app })
+    registerRabbitListener({ channel, eventEmitter: app })
 
     return app
 }

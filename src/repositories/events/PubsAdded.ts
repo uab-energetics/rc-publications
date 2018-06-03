@@ -3,14 +3,12 @@ import {Publication} from "../models/Publication";
 
 export const PUBS_ADDED = 'publications.added'
 
-export interface PubsAdded extends AppEvent {
-    payload: {
-        repoID: string
-        publications: Publication[]
-    }
+export interface PubsAdded {
+    repoID: string
+    publications: Publication[]
 }
 
-export const pubsAdded = (repoID, publications) => ({
+export const pubsAdded = (repoID, publications): AppEvent<PubsAdded> => ({
     type: PUBS_ADDED,
     payload: {
         repoID,

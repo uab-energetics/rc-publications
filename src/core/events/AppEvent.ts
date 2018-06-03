@@ -1,5 +1,5 @@
 
-export interface AppEvent {
+export interface AppEvent<T> {
     type: string
-    payload: any
+    payload: T
 }
