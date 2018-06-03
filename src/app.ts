@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import * as dotenv from 'dotenv'
+import cors from 'cors'
 import {getConfigHelper} from "./core/config/config";
 import {getConfig} from "./_config";
 import {connectToRabbitMQ} from "./core/messaging/connect";
@@ -42,6 +43,7 @@ export const getApp = async () => {
     // event helper
     const event = getEventHelper({ eventEmitter: app })
 
+    app.use(cors())
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(morgan('dev'))
