@@ -36,9 +36,7 @@ export const addPublicationsRoute = ({dbConn, event}): Route => ({
             .add(publicationEntities)
 
         // emit the created event, and return the new publications
-        let evnt = pubsAdded(repoID, publicationEntities)
-        console.log(evnt)
-        event(evnt)
+        event(pubsAdded(repoID, publicationEntities))
         return { publications: publicationEntities }
     }
 
