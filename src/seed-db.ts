@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 import program from 'commander'
 
-import {getConfigHelper} from "./core/config/helper";
+import {getConfigHelper} from "./core/config/config";
 import {getConfig} from "./_config";
 import {seedDatabase} from "./core/database/seed";
 import {DATABASE} from "./core/database/_seeds";

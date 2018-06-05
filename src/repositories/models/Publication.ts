@@ -14,6 +14,6 @@ export class Publication {
     @Column('text')
     title: string
 
-    @ManyToOne(type => Repository, repo => repo.publications)
+    @ManyToOne(type => Repository, repo => repo.publications, { onDelete: 'CASCADE' })
     repo: Repository
 }
