@@ -18,7 +18,6 @@ import {registerRabbitListener} from "./repositories/listeners/rabbit.listener";
 import {getEventHelper} from "./core/events/event";
 import {addPublicationsRoute} from "./repositories/routes/publications.add";
 import {RouteNotFound} from "./core/errors/RouteNotFound";
-import {listPublicationsByRepoRoute} from "./repositories/routes/publications.listbyrepo";
 
 /**
  * COMPOSITION ROOT
@@ -53,7 +52,6 @@ export const getApp = async () => {
     useRoute(app, deleteRepoRoute({ dbConn, event }))
     useRoute(app, updateRepoRoute({ dbConn, event }))
     useRoute(app, listReposByProject({ dbConn }))
-    useRoute(app, listPublicationsByRepoRoute({ dbConn }))
     useRoute(app, addPublicationsRoute({ dbConn, event }))
     useRoute(app, removePublicationsRoute({ dbConn, event }))
 
