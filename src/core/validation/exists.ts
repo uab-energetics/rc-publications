@@ -5,6 +5,6 @@ export const validateExists = connection => (reqProp, modelProp, modelRef) => as
     if(!id) id = req.params[reqProp]
 
     let model = await connection.getRepository(modelRef).findOne({ [modelProp]: id })
-    if(!model) throw new NotFoundError("Resource not Found")
+    if(!model) return next(new NotFoundError("Resource not Found"))
     next()
 }

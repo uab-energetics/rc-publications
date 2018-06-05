@@ -15,7 +15,7 @@ export const deleteRepoRoute = ({dbConn, event}): Route => ({
     }),
 
     validators: [
-        validateExists(dbConn)('id', 'uuid', Repository)
+        validateExists(dbConn)('id', 'id', Repository)
     ],
 
     controller: async ({repoID, projectID}) => {
