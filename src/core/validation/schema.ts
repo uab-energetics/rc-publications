@@ -7,6 +7,6 @@ export const validateBody = (schema) => async (req, res, next) => {
         allowUnknown: true
     })
     if(result.error)
-        throw new BadRequestError("Invalid request params", result.error)
+        return next(new BadRequestError("Invalid request params", result.error))
     next()
 }

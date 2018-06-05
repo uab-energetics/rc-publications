@@ -1,8 +1,15 @@
 import {HTTPError} from "./HTTPError";
 import {RouteNotFound} from "./RouteNotFound";
+import {BadRequestError} from "../validation/errors/BadRequestError";
 
 export const httpErrorHandler = (err, req, res, next) => {
-    if(err instanceof HTTPError) {
+
+    if (err instanceof BadRequestError) {
+        res.status(err.statusCode).json({
+            msg: err.message,
+            errors: err.errors
+        })
+    } else if (err instanceof HTTPError) {
         res.status(err.statusCode).json({
             msg: err.message,
             trace: err.stack
