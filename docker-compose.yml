@@ -7,30 +7,32 @@ networks:
 
 services:
 
-  app:
+  rc-publications:
+    container_name: rc-publications-dev
     build:
       context: .
       dockerfile: Dockerfile.dev
     volumes:
       - ./:/app
     environment:
-      RABBITMQ_HOST: rabbitmq
-      MYSQL_HOST: mysql
-      MYSQL_DB: pubs
+      RABBITMQ_HOST: rc-rabbitmq
+      MYSQL_HOST: rc-publications-db
+      MYSQL_DB: publications
       MYSQL_USER: root
       MYSQL_PASS: secret
     ports:
-      - 8080:80
+      - 8004:80
 
-  mysql:
+  rc-publications-db:
     image: mysql:5.7
+    container_name: rc-publications-db-dev
     ports:
-      - 3306:3306
+      - 33061:3306
     environment:
       MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: pubs
+      MYSQL_DATABASE: publications
 
-  rabbitmq:
+  rc-rabbitmq:
     image: "rabbitmq:3-management"
     ports:
       - "15672:15672"
