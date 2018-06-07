@@ -19,6 +19,7 @@ import {getEventHelper} from "./core/events/event";
 import {addPublicationsRoute} from "./repositories/routes/publications.add";
 import {RouteNotFound} from "./core/errors/RouteNotFound";
 import {listPublicationsByRepoRoute} from "./repositories/routes/publications.listbyrepo";
+import {pubmedProxy} from "./core/routing/pubmed.proxy";
 
 /**
  * COMPOSITION ROOT
@@ -43,6 +44,9 @@ export const getApp = async () => {
 
     // event helper
     const event = getEventHelper({ eventEmitter: app })
+
+
+    app.get('/pmc-api', pubmedProxy())
 
     app.use(cors())
     app.use(bodyParser.json())
