@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, Generated, Index, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Repository} from "./Repository";
 
 
@@ -7,6 +7,15 @@ export class Publication {
 
     @PrimaryGeneratedColumn()
     id: number
+
+    @Column()
+    @Generated('uuid')
+    @Index()
+    uuid: string
+
+    @Column('varchar', { nullable: true })
+    @Index()
+    sourceID: string
 
     @Column('varchar', { length: '500' })
     embeddingURL: string
