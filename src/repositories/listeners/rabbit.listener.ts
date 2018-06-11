@@ -11,7 +11,7 @@ export const registerRabbitListener = ({channel, eventEmitter}) => {
     channel.assertExchange( 'services.events',   'topic',    {durable: false})
 
     let publish = (ex, key, data) =>
-        channel.publish(ex, key, new Buffer(JSON.stringify(data)))
+        channel.publish(ex, key, Buffer.from(JSON.stringify(data)))
 
     eventEmitter.on(REPO_CREATED, repo => {
         publish('pub-repos', 'created', repo)
