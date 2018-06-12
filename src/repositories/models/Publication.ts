@@ -20,7 +20,7 @@ export class Publication {
     @Column('varchar', { length: '500' })
     embeddingURL: string
 
-    @Column('text')
+    @Column({ type: 'text', charset: 'utf8mb4'})
     title: string
 
     @ManyToOne(type => Repository, repo => repo.publications, { onDelete: 'CASCADE' })
