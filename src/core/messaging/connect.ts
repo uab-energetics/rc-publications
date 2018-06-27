@@ -10,6 +10,10 @@ export const connectToRabbitMQ = async ({ config }) => {
         let vhost = config('rabbitmq.vhost')
         let port = config('rabbitmq.port')
         let connection = await amqp.connect(`amqp://${user}:${pass}@${host}:${port}${vhost}`)
+        connection.on('close', () => {
+            console.error("RabbitMQ connection closed")
+            process.exit(1)
+        })
         let channel = await connection.createChannel()
         return { channel, connection }
     } catch (e) {
