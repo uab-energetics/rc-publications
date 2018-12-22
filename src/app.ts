@@ -20,6 +20,7 @@ import {addPublicationsRoute} from "./repositories/routes/publications.add";
 import {RouteNotFound} from "./core/errors/RouteNotFound";
 import {listPublicationsByRepoRoute} from "./repositories/routes/publications.listbyrepo";
 import {pubmedProxy} from "./core/routing/pubmed.proxy";
+import { retrieveRepoRoute } from './repositories/routes/repo.retrieve';
 
 /**
  * COMPOSITION ROOT
@@ -54,6 +55,7 @@ export const getApp = async () => {
     app.use(morgan('dev'))
 
     useRoute(app, createRepoRoute({ dbConn, event }))
+    useRoute(app, retrieveRepoRoute({dbConn}))
     useRoute(app, deleteRepoRoute({ dbConn, event }))
     useRoute(app, updateRepoRoute({ dbConn, event }))
     useRoute(app, listReposByProject({ dbConn }))
